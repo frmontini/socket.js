@@ -1,0 +1,17 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js"></script>
+
+<script>
+/* INICIA SOCKET */
+var socket = io("https://node.example.com/", {
+	extraHeaders: {
+		token: "123456"
+	}
+})
+
+/* RECEBE WEBHOOK */
+socket.on('webhook', async (data) => {
+
+    console.log(data)
+	
+})
+</script>
