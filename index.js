@@ -29,15 +29,22 @@ app.use('*', async (req, res, next) => {
 /* LÊ WEBHOOKS */
 app.post('/webhook', (req, res) => {
 
-	let tokens = req.body.tokens.split(',')
-	delete (req.body.tokens)
-
-	for(let i = 0; i < tokens.length; i = i + 1)
+	if(!req.body.hasOwnProperty('tokens'))
 	{
-		global.socket_emit(tokens[i], 'webhook', req.body)
+		res.status(500).send({status: 500, details: 'empty tokens'})
 	}
-
-	res.status(200).send({status: 200})
+	else
+	{
+		let tokens = req.body.tokens.split(',')
+		delete (req.body.tokens)
+	
+		for(let i = 0; i < tokens.length; i = i + 1)
+		{
+			global.socket_emit(tokens[i].trim(), 'webhook', req.body)
+		}
+	
+		res.status(200).send({status: 200})
+	}
 })
 
 /* SOCKET | SERVER */
